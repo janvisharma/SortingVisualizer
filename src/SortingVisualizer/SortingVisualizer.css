@@ -1,0 +1,15 @@
+.container {
+    position: absolute;
+    right: 50px;
+}
+h1 {
+    text-align: center;
+}
+
+.bar {
+    width: 7px;
+    align-content: center;
+    background-color: #b4f2e1;
+    display: inline-block;
+    margin: 1px;
+}
