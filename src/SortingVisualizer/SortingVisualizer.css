@@ -1,15 +1,31 @@
-.container {
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap');
+
+html, body {
+    background-color: black;
+    width: 100vw;
+}
+.Container {
+    background-color: black;
     position: absolute;
-    right: 50px;
+    max-width: '100%';
+}
+@media only screen and (min-width : 1200px) {
+    .container { max-width: none; }
 }
 h1 {
     text-align: center;
+    color: cornsilk;
+    font-family: 'Source Code Pro', monospace;
 }
-
+.buttons{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
 .bar {
     width: 7px;
-    align-content: center;
-    background-color: #b4f2e1;
+    border-radius: 25px 10px 3px 3px;
+    background-color: #3da4ab;
     display: inline-block;
-    margin: 1px;
+    margin: 0.5px;
 }

@@ -1,4 +1,7 @@
 .App {
+  background-image: linear-gradient(to right, #ff6e7f, #bfe9ff);
+  background-color: black;
+
   text-align: center;
 }
 
@@ -14,6 +17,8 @@
 }
 
 .App-header {
+  background-image: linear-gradient(to right, #ff6e7f, #bfe9ff);
+
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
