@@ -86,7 +86,7 @@ class SortingVisualizer extends React.Component{
         }
         this.setState({generateButton: false})
     }
-
+   
     async insertionSort() {
         this.setState({generateButton: true}) // disable the generateArrayButton
         var array = this.state.array // current array to be sorted 
@@ -145,7 +145,7 @@ class SortingVisualizer extends React.Component{
                 <Button style={{margin: '5px'}} disabled={this.state.generateButton} variant="outline-primary" onClick={this.randomizeArray.bind(this)}>Generate New Array</Button>{' '}
                 <Button style={{margin: '5px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
                 <Button style={{margin: '5px'}} variant="outline-primary">Merge Sort</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary">Quick Sort</Button>{' '}
+                <Button style={{margin: '5px'}} variant="outline-primary" >Quick Sort</Button>{' '}
                 <Button style={{margin: '5px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
                 <Button style={{margin: '5px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
                 </div>
