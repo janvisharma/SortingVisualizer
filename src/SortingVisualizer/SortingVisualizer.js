@@ -2,7 +2,9 @@ import React from 'react';
 import './SortingVisualizer.css';
 import Button from 'react-bootstrap/Button';
 import { Container } from 'react-bootstrap';
+const MAX_SIZE = 100
 class SortingVisualizer extends React.Component{
+    
     constructor(props) { 
         super(props);
 
@@ -38,7 +40,7 @@ class SortingVisualizer extends React.Component{
             arrayBars[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
         }
 
-        for(i=0;i<180;i++){
+        for(i=0;i<MAX_SIZE;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
         }
@@ -46,35 +48,43 @@ class SortingVisualizer extends React.Component{
 
     }
     async selectionSort(){
+        this.setState({generateButton: true})
         var array = this.state.array
         var arrayBars = document.getElementsByClassName('bar')
 
         var small, pos=0, i, k, temp
 
-        for(i=0;i<180;i++){
+        for(i=0;i<MAX_SIZE;i++){
+            await new Promise(resolve => setTimeout(resolve, 5));
+            arrayBars[i].style.backgroundColor = '#3a86ff'
+
             small = array[i]
             pos = i            
-            await new Promise(resolve => setTimeout(resolve, 5));
-            arrayBars[i].style.backgroundColor = '#2ec4b6'
-            for(k=i+1;k<180;k++){
+            for(k=i+1;k<MAX_SIZE;k++){
                 await new Promise(resolve => setTimeout(resolve, 5));
-                arrayBars[k].style.backgroundColor = '#2ec4b6'
+                arrayBars[k].style.backgroundColor = '#ffbe0b';
                 if(array[k]<small){
                     small = array[k]
                     pos = k
                 }
                 await new Promise(resolve => setTimeout(resolve, 5));
-                arrayBars[k].style.backgroundColor = '#8338ec'
+                arrayBars[k].style.backgroundColor = '#3a86ff';
             }
         
             temp = array[i]
             array[i] = small
             array[pos] = temp
             this.setState({array})
+
             await new Promise(resolve => setTimeout(resolve, 7));
-            arrayBars[pos].style.backgroundColor = '#ffbe0b'
+            arrayBars[i].style.backgroundColor = '#ff006e'
         }
         this.setState({array})
+        for(i=0;i<MAX_SIZE;i++){
+            await new Promise(resolve => setTimeout(resolve, 0.5));
+            arrayBars[i].style.backgroundColor = '#3da4ab';
+        }
+        this.setState({generateButton: false})
     }
 
     async insertionSort() {
@@ -83,7 +93,7 @@ class SortingVisualizer extends React.Component{
         var arrayBars = document.getElementsByClassName('bar'); // for animations
 
         var i, j;
-        for(i=0;i<180;i++){
+        for(i=0;i<MAX_SIZE;i++){
             var temp = array[i];
             await new Promise(resolve => setTimeout(resolve, 5));
             arrayBars[i].style.backgroundColor = '#ff1654';
@@ -102,7 +112,7 @@ class SortingVisualizer extends React.Component{
             this.setState({array})
         }
         
-        for(i=0;i<180;i++){
+        for(i=0;i<MAX_SIZE;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
         }
@@ -116,7 +126,7 @@ class SortingVisualizer extends React.Component{
 
     randomizeArray() {
         const array = [];
-        for(let i = 0; i<180;i++){
+        for(let i = 0; i<MAX_SIZE;i++){
             array.push(Math.floor((Math.random() * 600) + 5));
         }
         this.setState({array});
@@ -128,7 +138,9 @@ class SortingVisualizer extends React.Component{
             // <div className="container">
             <Container fluid style={{backgroundColor:'black'}}>
                 <div className="header"><h1>Sorting Visualizer</h1></div>
+                <div className="array-bars">
                 {array.map((value, index) => (<div className="bar" key={index} style={{height: `${value}px`}}></div>))}
+                </div>
                 <div className="buttons">
                 <Button style={{margin: '5px'}} disabled={this.state.generateButton} variant="outline-primary" onClick={this.randomizeArray.bind(this)}>Generate New Array</Button>{' '}
                 <Button style={{margin: '5px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
