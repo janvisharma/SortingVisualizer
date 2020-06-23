@@ -3,7 +3,7 @@ import './SortingVisualizer.css';
 import Button from 'react-bootstrap/Button';
 import { Container } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-const MAX_SIZE = 100
+// const this.state.value = 100 // size of array 
 class SortingVisualizer extends React.Component{
     
     constructor(props) { 
@@ -11,6 +11,7 @@ class SortingVisualizer extends React.Component{
 
         this.state = {
             array: [],
+            value: 30,
             generateButton: false, 
         };
     }
@@ -41,7 +42,7 @@ class SortingVisualizer extends React.Component{
             arrayBars[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
         }
 
-        for(i=0;i<MAX_SIZE;i++){
+        for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
         }
@@ -55,13 +56,13 @@ class SortingVisualizer extends React.Component{
 
         var small, pos=0, i, k, temp
 
-        for(i=0;i<MAX_SIZE;i++){
+        for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 5));
             arrayBars[i].style.backgroundColor = '#3a86ff'
 
             small = array[i]
             pos = i            
-            for(k=i+1;k<MAX_SIZE;k++){
+            for(k=i+1;k<this.state.value;k++){
                 await new Promise(resolve => setTimeout(resolve, 5));
                 arrayBars[k].style.backgroundColor = '#ffbe0b';
                 if(array[k]<small){
@@ -81,7 +82,7 @@ class SortingVisualizer extends React.Component{
             arrayBars[i].style.backgroundColor = '#ff006e'
         }
         this.setState({array})
-        for(i=0;i<MAX_SIZE;i++){
+        for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
         }
@@ -94,7 +95,7 @@ class SortingVisualizer extends React.Component{
         var arrayBars = document.getElementsByClassName('bar'); // for animations
 
         var i, j;
-        for(i=0;i<MAX_SIZE;i++){
+        for(i=0;i<this.state.value;i++){
             var temp = array[i];
             await new Promise(resolve => setTimeout(resolve, 5));
             arrayBars[i].style.backgroundColor = '#ff1654';
@@ -113,7 +114,7 @@ class SortingVisualizer extends React.Component{
             this.setState({array})
         }
         
-        for(i=0;i<MAX_SIZE;i++){
+        for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
         }
@@ -127,12 +128,15 @@ class SortingVisualizer extends React.Component{
 
     randomizeArray() {
         const array = [];
-        for(let i = 0; i<MAX_SIZE;i++){
+        for(let i = 0; i<this.state.value;i++){
             array.push(Math.floor((Math.random() * 550) + 5));
         }
         this.setState({array});
     }    
-    
+    handleChange(event) {
+        this.setState({value: event.target.value});
+        this.randomizeArray()
+    }
     render(){
         const {array} = this.state;
         return (
@@ -142,7 +146,12 @@ class SortingVisualizer extends React.Component{
                 <div className='range-slider'>
                 <Button style={{margin: '10px'}} disabled={this.state.generateButton} variant="outline-primary" onClick={this.randomizeArray.bind(this)}>Generate New Array</Button>{' '}
                 <RangeSlider
+                // onChange={changeEvent => this.setState({ value: changeEvent.target.value})}
+                value = {this.state.value}
+                onChange={this.handleChange.bind(this)}
                 variant="info"
+                min="30"
+                max="100"
                 />
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary">Merge Sort</Button>{' '}
