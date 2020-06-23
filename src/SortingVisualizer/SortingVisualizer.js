@@ -41,7 +41,7 @@ class SortingVisualizer extends React.Component{
             this.setState({array})
             arrayBars[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
         }
-
+        this.setState({array})
         for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
             arrayBars[i].style.backgroundColor = '#3da4ab';
@@ -148,6 +148,7 @@ class SortingVisualizer extends React.Component{
                 <RangeSlider
                 // onChange={changeEvent => this.setState({ value: changeEvent.target.value})}
                 value = {this.state.value}
+                disabled={this.state.generateButton}
                 onChange={this.handleChange.bind(this)}
                 variant="info"
                 min="30"
