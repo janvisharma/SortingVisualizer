@@ -2,6 +2,7 @@ import React from 'react';
 import './SortingVisualizer.css';
 import Button from 'react-bootstrap/Button';
 import { Container } from 'react-bootstrap';
+import RangeSlider from 'react-bootstrap-range-slider';
 const MAX_SIZE = 100
 class SortingVisualizer extends React.Component{
     
@@ -127,7 +128,7 @@ class SortingVisualizer extends React.Component{
     randomizeArray() {
         const array = [];
         for(let i = 0; i<MAX_SIZE;i++){
-            array.push(Math.floor((Math.random() * 600) + 5));
+            array.push(Math.floor((Math.random() * 550) + 5));
         }
         this.setState({array});
     }    
@@ -138,17 +139,21 @@ class SortingVisualizer extends React.Component{
             // <div className="container">
             <Container fluid style={{backgroundColor:'black'}}>
                 <div className="header"><h1>Sorting Visualizer</h1></div>
+                <div className='range-slider'>
+                <Button style={{margin: '10px'}} disabled={this.state.generateButton} variant="outline-primary" onClick={this.randomizeArray.bind(this)}>Generate New Array</Button>{' '}
+                <RangeSlider
+                variant="info"
+                />
+                <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary">Merge Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary" >Quick Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
+                </div>
                 <div className="array-bars">
                 {array.map((value, index) => (<div className="bar" key={index} style={{height: `${value}px`}}></div>))}
                 </div>
-                <div className="buttons">
-                <Button style={{margin: '5px'}} disabled={this.state.generateButton} variant="outline-primary" onClick={this.randomizeArray.bind(this)}>Generate New Array</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary">Merge Sort</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary" >Quick Sort</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
-                <Button style={{margin: '5px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
-                </div>
+                
             </Container>
         );
     }

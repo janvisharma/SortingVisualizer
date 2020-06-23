@@ -10,6 +10,11 @@ html, body {
     align-items: center;
     max-width: '100%';
 }
+.range-slider{
+    align-items: center;
+    justify-content: center;
+    display: flex
+}
 .array-bars {
     align-items: center;
     justify-content: center;
