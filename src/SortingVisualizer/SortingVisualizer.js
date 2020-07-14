@@ -8,7 +8,7 @@ class SortingVisualizer extends React.Component{
     
     constructor(props) { 
         super(props);
-
+        this.arrayBars = React.createRef()
         this.state = {
             array: [],
             value: 30,
@@ -42,9 +42,16 @@ class SortingVisualizer extends React.Component{
             arrayBars[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
         }
         this.setState({array})
+        // var n = this.state.value
+        
         for(i=0;i<this.state.value;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
-            arrayBars[i].style.backgroundColor = '#3da4ab';
+            if(arrayBars[i]){
+                arrayBars[i].style.backgroundColor = '#3da4ab';
+            }
+            else{
+                break
+            }
         }
         this.setState({generateButton: false})
 
@@ -88,12 +95,61 @@ class SortingVisualizer extends React.Component{
         }
         this.setState({generateButton: false})
     }
+    Partition(array, p, r){
+        var x = array[r]
+        var i = p-1
+
+        var j,temp
+
+        for(j=p;j<r;j++){
+            temp = 0
+            if(array[j]<=x){
+                i = i+1
+                temp=array[j]
+                array[j] = array[i]
+                array[i] = temp
+            }
+        }
+        temp = 0 
+        temp = array[r]
+        array[r] = array[i+1]
+        array[i+1] = temp
+        return i+1
+    }
+    async quickSort(array, p, r) {
+        if(p<r){
+            var q = this.Partition(array,p,r)
+            this.quickSort(array, p, q-1)
+            this.quickSort(array,q+1,r)
+        }
+    }
+    quickSortHelper(){
+        var array = this.state.array
+        var value = this.state.value
+        this.quickSort(array, 0, value-1)
+        this.setState({array})
+    }
+    merge(array, start, mid, end){
+        var n1 = mid - start +1
+        var n2 = end - mid
+
+        
+        // continue here
+    }
+    mergeSort(array, start, end){
+        if(start<end){
+            var mid = start + (end-start)/2
+            this.mergeSort(array, start, mid)
+            this.mergeSort(array,mid+1, end)
+            
+            this.merge(array, start, mid, end)
+        }
+    }
    
     async insertionSort() {
         this.setState({generateButton: true}) // disable the generateArrayButton
         var array = this.state.array // current array to be sorted 
         var arrayBars = document.getElementsByClassName('bar'); // for animations
-
         var i, j;
         for(i=0;i<this.state.value;i++){
             var temp = array[i];
@@ -121,7 +177,7 @@ class SortingVisualizer extends React.Component{
         this.setState({generateButton: false})
 
     }
-
+    
     componentDidMount() {
         this.randomizeArray();
     }
@@ -156,7 +212,7 @@ class SortingVisualizer extends React.Component{
                 />
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary">Merge Sort</Button>{' '}
-                <Button style={{margin: '10px'}} variant="outline-primary" >Quick Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.quickSortHelper.bind(this)}>Quick Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
                 </div>
