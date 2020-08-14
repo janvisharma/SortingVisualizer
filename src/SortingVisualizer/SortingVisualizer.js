@@ -180,17 +180,61 @@ class SortingVisualizer extends React.Component{
         var n1 = mid - start +1
         var n2 = end - mid
 
-        // continue here
+        var left = []
+        var right = []
+
+        var i, j, k = 0;
+
+        for(i=0;i<n1;i++){
+            left[i] = array[start + i]
+        }
+        for(j=0;j<n2;j++){
+            right[j] = array[mid + 1 + j]
+        }
+
+        var i = 0 , j = 0 , k = start 
+
+        while(i<n1 && j<n2){
+            if(left[i]<=right[j]){
+                array[k] = left[i]
+                i += 1
+                k += 1
+            }
+            else{
+                array[k] = right[j]
+                j += 1
+                k += 1
+            }
+        }
+
+        while(i<n1){
+            array[k] = left[i]
+            i += 1
+            k += 1
+        }
+        while(j<n2){
+            array[k] = right[j]
+            j += 1
+            k += 1
+        }
+        
     }
     mergeSort(array, start, end){
         if(start<end){
-            var mid = start + (end-start)/2
+            var mid = Math.floor(start + (end-start)/2)
             this.mergeSort(array, start, mid)
             this.mergeSort(array,mid+1, end)
             this.merge(array, start, mid, end)
         }
     }
-   
+
+    
+    mergeSortHelper () {
+        var array = this.state.array
+        this.mergeSort(array, 0, array.length - 1)
+        this.setState({array})
+        console.log(this.state.array)
+    }
     async insertionSort() {
         this.setState({generateButton: true}) // disable the generateArrayButton
         var array = this.state.array // current array to be sorted 
@@ -258,7 +302,7 @@ class SortingVisualizer extends React.Component{
                 max="100"
                 />
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.bubbleSorthelper.bind(this)}>Bubble Sort</Button>{' '}
-                <Button style={{margin: '10px'}} variant="outline-primary">Merge Sort</Button>{' '}
+                <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.mergeSortHelper.bind(this)}>Merge Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.quickSortHelper.bind(this)}>Quick Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
