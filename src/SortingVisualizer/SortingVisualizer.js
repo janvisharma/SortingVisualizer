@@ -142,36 +142,39 @@ class SortingVisualizer extends React.Component{
         return i+1
     }
     
-    async quickSort(array, p, r) {
+    quickSort(array, p, r) {
         setTimeout(() => {
             if(p<r){
                 var q = this.Partition(array,p,r)
                 this.quickSort(array, p, q-1)
                 this.quickSort(array,q+1,r)
             }
-        }, 100);
+        }, 110);
         
     }
     
     async quickSortHelper(){
+        await this.setState({generateButton: true})
+        console.log(this.state.generateButton)
+
         var array = this.state.array
         // var value = this.state.value
         // this.quickSort(array, 0, value-1)
         // instead of using the state value, use the state array's length 
         
-        let result = await this.quickSort(array, 0, array.length-1 )
-       
-
-        // running both side by side?
+        await this.quickSort(array, 0, array.length-1 )
+        
+        setTimeout(() => {
+            var i 
+            array = this.arrayRef
+            this.setState({generateButton: false})
+            for(i=0;i<this.arrayRef.length;i++){
+                this.arrayRef[i].style.backgroundColor = '#3da4ab'
+            }
+        }, 2000)
         
         this.setState({array})
 
-        var i;
-
-        //var arrayBars = this.myArrayBars.current
-        //console.log(this.myArrayBars.current)
-        console.log(this.state.array)
-        
     }
     merge(array, start, mid, end){
         var n1 = mid - start +1
