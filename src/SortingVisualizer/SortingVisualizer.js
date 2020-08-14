@@ -153,8 +153,8 @@ class SortingVisualizer extends React.Component{
         
     }
     
-    async quickSortHelper(){
-        await this.setState({generateButton: true})
+    quickSortHelper(){
+        this.setState({generateButton: true})
         console.log(this.state.generateButton)
 
         var array = this.state.array
@@ -162,14 +162,16 @@ class SortingVisualizer extends React.Component{
         // this.quickSort(array, 0, value-1)
         // instead of using the state value, use the state array's length 
         
-        await this.quickSort(array, 0, array.length-1 )
+        this.quickSort(array, 0, array.length-1 )
         
         setTimeout(() => {
             var i 
             array = this.arrayRef
             this.setState({generateButton: false})
-            for(i=0;i<this.arrayRef.length;i++){
-                this.arrayRef[i].style.backgroundColor = '#3da4ab'
+            for(i=0;i<this.arrayRef.length;i++){ // or use let for i
+                setTimeout((i)=>{
+                    this.arrayRef[i].style.backgroundColor = '#3da4ab'
+                }, 50*i, i) // pass i as a param 
             }
         }, 2000)
         
@@ -217,14 +219,16 @@ class SortingVisualizer extends React.Component{
             j += 1
             k += 1
         }
-        
+    
+               
     }
     mergeSort(array, start, end){
         if(start<end){
             var mid = Math.floor(start + (end-start)/2)
+            this.arrayRef[mid].style.backgroundColor = '#6610f2'            
             this.mergeSort(array, start, mid)
             this.mergeSort(array,mid+1, end)
-            this.merge(array, start, mid, end)
+            this.merge(array, start, mid, end)   
         }
     }
 
@@ -232,9 +236,19 @@ class SortingVisualizer extends React.Component{
     mergeSortHelper () {
         var array = this.state.array
         this.mergeSort(array, 0, array.length - 1)
+
         this.setState({array})
         console.log(this.state.array)
+
+        var i 
+        for(i=0;i<this.arrayRef.length;i++){ // or use let for i
+            setTimeout((i)=>{
+                this.arrayRef[i].style.backgroundColor = '#3da4ab'
+            }, 50*i, i) // pass i as a param 
+        }
+
     }
+
     async insertionSort() {
         this.setState({generateButton: true}) // disable the generateArrayButton
         var array = this.state.array // current array to be sorted 
