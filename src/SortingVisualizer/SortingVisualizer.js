@@ -116,7 +116,7 @@ class SortingVisualizer extends React.Component{
             if(array[j]<=x){
 
                 setTimeout(() => {
-                    this.arrayRef[j].style.backgroundColor = '#89043D';
+                    this.arrayRef[j].style.backgroundColor = '#ff6b6b';
                 }, 20)
 
                 i = i+1
@@ -131,25 +131,29 @@ class SortingVisualizer extends React.Component{
         array[i+1] = temp
 
         setTimeout(() => {
-            this.arrayRef[i+1].style.backgroundColor = '#B2ABF2';
+            this.arrayRef[i+1].style.backgroundColor = '#ffe66d';
         }, 20)
 
         setTimeout(() => {
             this.setState({array})
         }, 5)
+        
 
 
         return i+1
     }
     
-    quickSort(array, p, r) {
+    
+
+    async quickSort(array, p, r) {
         setTimeout(() => {
             if(p<r){
                 var q = this.Partition(array,p,r)
                 this.quickSort(array, p, q-1)
                 this.quickSort(array,q+1,r)
-            }
-        }, 110);
+            }            
+
+         }, 110);
         
     }
     
@@ -162,11 +166,10 @@ class SortingVisualizer extends React.Component{
         // this.quickSort(array, 0, value-1)
         // instead of using the state value, use the state array's length 
         
-        this.quickSort(array, 0, array.length-1 )
+        let promise = this.quickSort(array, 0, array.length-1 )
         
         setTimeout(() => {
             var i 
-            array = this.arrayRef
             this.setState({generateButton: false})
             for(i=0;i<this.arrayRef.length;i++){ // or use let for i
                 setTimeout((i)=>{
@@ -174,6 +177,7 @@ class SortingVisualizer extends React.Component{
                 }, 50*i, i) // pass i as a param 
             }
         }, 2000)
+        
         
         this.setState({array})
 
@@ -222,10 +226,14 @@ class SortingVisualizer extends React.Component{
     
                
     }
+    async colorMe(index){
+        await new Promise(resolve => setTimeout(resolve, 5));
+        this.arrayRef[index].style.backgroundColor = '#6610f2'        
+    }
     mergeSort(array, start, end){
         if(start<end){
             var mid = Math.floor(start + (end-start)/2)
-            this.arrayRef[mid].style.backgroundColor = '#6610f2'            
+            this.colorMe(mid)            
             this.mergeSort(array, start, mid)
             this.mergeSort(array,mid+1, end)
             this.merge(array, start, mid, end)   
