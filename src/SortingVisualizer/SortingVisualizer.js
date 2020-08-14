@@ -8,21 +8,30 @@ class SortingVisualizer extends React.Component{
     
     constructor(props) { 
         super(props);
-        this.arrayBars = React.createRef()
+        this.myArrayBars = [] // use an array 
+        
         this.state = {
             array: [],
             value: 30,
             generateButton: false, 
         };
+
+        this.arrayRef = [] // refs using callback method
+ 
     }
 
+    
     async bubbleSorthelper() {
         this.setState({generateButton: true})
         var array = this.state.array
+
+        console.log(this.arrayRef)
         //const sortedArray = bubbleSort(array);
         //this.setState({sortedArray})
         var i, j;
-        var arrayBars = document.getElementsByClassName('bar');
+        // var arrayBars = document.getElementsByClassName('bar');
+
+        // let us use refs instead 
 
         for(i = 0; i<array.length; i++){
             for(j = 0; j<array.length-i-1; j++){
@@ -31,53 +40,52 @@ class SortingVisualizer extends React.Component{
                     var temp = array[j];
                     array[j] = array[j+1];
                     array[j+1] = temp;
-                    arrayBars[j].style.backgroundColor = '#2d00f7';// '#d63447';
-                    arrayBars[j+1].style.backgroundColor = '#2d00f7';//'#d63447';
+                    this.arrayRef[j].style.backgroundColor = '#2d00f7';// '#d63447';
+                    this.arrayRef[j+1].style.backgroundColor = '#2d00f7';//'#d63447';
                     await new Promise(resolve => setTimeout(resolve, 10));
                 }
-                arrayBars[j].style.backgroundColor = '#d100d1';//'#3da4ab';
-                arrayBars[j+1].style.backgroundColor =  '#d100d1';//'#3da4ab';
+                this.arrayRef[j].style.backgroundColor = '#d100d1';//'#3da4ab';
+                this.arrayRef[j+1].style.backgroundColor =  '#d100d1';//'#3da4ab';
             }
             this.setState({array})
-            arrayBars[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
+            this.arrayRef[array.length-i-1].style.backgroundColor = '#e0aaff';//'#bbf1c8';
         }
         this.setState({array})
         // var n = this.state.value
         
-        for(i=0;i<this.state.value;i++){
+        for(i=0;i<this.state.array.length;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
-            if(arrayBars[i]){
-                arrayBars[i].style.backgroundColor = '#3da4ab';
+            if(this.arrayRef[i]){
+                this.arrayRef[i].style.backgroundColor = '#3da4ab';
             }
             else{
                 break
             }
         }
         this.setState({generateButton: false})
-
+        
     }
     async selectionSort(){
         this.setState({generateButton: true})
         var array = this.state.array
-        var arrayBars = document.getElementsByClassName('bar')
+        // var arrayBars = document.getElementsByClassName('bar')
 
         var small, pos=0, i, k, temp
 
-        for(i=0;i<this.state.value;i++){
+        for(i=0;i<this.state.array.length;i++){
             await new Promise(resolve => setTimeout(resolve, 5));
-            arrayBars[i].style.backgroundColor = '#3a86ff'
-
+            this.arrayRef[i].style.backgroundColor = '#3a86ff'
             small = array[i]
             pos = i            
-            for(k=i+1;k<this.state.value;k++){
+            for(k=i+1;k<this.state.array.length;k++){
                 await new Promise(resolve => setTimeout(resolve, 5));
-                arrayBars[k].style.backgroundColor = '#ffbe0b';
+                this.arrayRef[k].style.backgroundColor = '#ffbe0b';
                 if(array[k]<small){
                     small = array[k]
                     pos = k
                 }
                 await new Promise(resolve => setTimeout(resolve, 5));
-                arrayBars[k].style.backgroundColor = '#3a86ff';
+                this.arrayRef[k].style.backgroundColor = '#3a86ff';
             }
         
             temp = array[i]
@@ -86,15 +94,17 @@ class SortingVisualizer extends React.Component{
             this.setState({array})
 
             await new Promise(resolve => setTimeout(resolve, 7));
-            arrayBars[i].style.backgroundColor = '#ff006e'
+            this.arrayRef[i].style.backgroundColor = '#ff006e'
         }
         this.setState({array})
-        for(i=0;i<this.state.value;i++){
-            await new Promise(resolve => setTimeout(resolve, 0.5));
-            arrayBars[i].style.backgroundColor = '#3da4ab';
+        for(i=0;i<this.state.array.length;i++){
+            await new Promise(resolve => setTimeout(resolve, 0.5)); 
+            this.arrayRef[i].style.backgroundColor = '#3da4ab';
         }
         this.setState({generateButton: false})
     }
+
+    
     Partition(array, p, r){
         var x = array[r]
         var i = p-1
@@ -104,6 +114,11 @@ class SortingVisualizer extends React.Component{
         for(j=p;j<r;j++){
             temp = 0
             if(array[j]<=x){
+
+                setTimeout(() => {
+                    this.arrayRef[j].style.backgroundColor = '#89043D';
+                }, 20)
+
                 i = i+1
                 temp=array[j]
                 array[j] = array[i]
@@ -114,26 +129,54 @@ class SortingVisualizer extends React.Component{
         temp = array[r]
         array[r] = array[i+1]
         array[i+1] = temp
+
+        setTimeout(() => {
+            this.arrayRef[i+1].style.backgroundColor = '#B2ABF2';
+        }, 20)
+
+        setTimeout(() => {
+            this.setState({array})
+        }, 5)
+
+
         return i+1
     }
+    
     async quickSort(array, p, r) {
-        if(p<r){
-            var q = this.Partition(array,p,r)
-            this.quickSort(array, p, q-1)
-            this.quickSort(array,q+1,r)
-        }
+        setTimeout(() => {
+            if(p<r){
+                var q = this.Partition(array,p,r)
+                this.quickSort(array, p, q-1)
+                this.quickSort(array,q+1,r)
+            }
+        }, 100);
+        
     }
-    quickSortHelper(){
+    
+    async quickSortHelper(){
         var array = this.state.array
-        var value = this.state.value
-        this.quickSort(array, 0, value-1)
+        // var value = this.state.value
+        // this.quickSort(array, 0, value-1)
+        // instead of using the state value, use the state array's length 
+        
+        let result = await this.quickSort(array, 0, array.length-1 )
+       
+
+        // running both side by side?
+        
         this.setState({array})
+
+        var i;
+
+        //var arrayBars = this.myArrayBars.current
+        //console.log(this.myArrayBars.current)
+        console.log(this.state.array)
+        
     }
     merge(array, start, mid, end){
         var n1 = mid - start +1
         var n2 = end - mid
 
-        
         // continue here
     }
     mergeSort(array, start, end){
@@ -141,7 +184,6 @@ class SortingVisualizer extends React.Component{
             var mid = start + (end-start)/2
             this.mergeSort(array, start, mid)
             this.mergeSort(array,mid+1, end)
-            
             this.merge(array, start, mid, end)
         }
     }
@@ -149,39 +191,42 @@ class SortingVisualizer extends React.Component{
     async insertionSort() {
         this.setState({generateButton: true}) // disable the generateArrayButton
         var array = this.state.array // current array to be sorted 
-        var arrayBars = document.getElementsByClassName('bar'); // for animations
+
         var i, j;
-        for(i=0;i<this.state.value;i++){
+        for(i=0;i<this.state.array.length;i++){
             var temp = array[i];
             await new Promise(resolve => setTimeout(resolve, 5));
-            arrayBars[i].style.backgroundColor = '#ff1654';
+            this.arrayRef[i].style.backgroundColor = '#ff1654';
+            
             j = i-1;
             while(j>=0 && array[j]>temp){
                 await new Promise(resolve => setTimeout(resolve, 5));
-                arrayBars[j].style.backgroundColor = '#ff1654';
+                this.arrayRef[j].style.backgroundColor = '#ff1654';
                 array[j+1] = array[j];
                 await new Promise(resolve => setTimeout(resolve, 1));
-                arrayBars[j].style.backgroundColor = '#7678ed'//'#ffa6c1';
+                this.arrayRef[j].style.backgroundColor = '#7678ed'//'#ffa6c1';
                 j = j - 1;
             }
-            arrayBars[i].style.backgroundColor = '#7678ed' //'#ffa6c1';
+            this.arrayRef[i].style.backgroundColor = '#7678ed' //'#ffa6c1';
 
             array[j+1] = temp;
             this.setState({array})
         }
-        
-        for(i=0;i<this.state.value;i++){
+        for(i=0;i<this.state.array.length;i++){
             await new Promise(resolve => setTimeout(resolve, 0.5));
-            arrayBars[i].style.backgroundColor = '#3da4ab';
+            if(this.arrayRef[i]){
+                this.arrayRef[i].style.backgroundColor = '#3da4ab';
+            }
         }
         this.setState({generateButton: false})
 
     }
-    
+
     componentDidMount() {
         this.randomizeArray();
+        
     }
-
+    
     randomizeArray() {
         const array = [];
         for(let i = 0; i<this.state.value;i++){
@@ -196,7 +241,6 @@ class SortingVisualizer extends React.Component{
     render(){
         const {array} = this.state;
         return (
-            // <div className="container">
             <Container fluid style={{backgroundColor:'black'}}>
                 <div className="header"><h1>Sorting Visualizer</h1></div>
                 <div className='range-slider'>
@@ -216,8 +260,16 @@ class SortingVisualizer extends React.Component{
                 <Button style={{margin: '10px'}} variant="outline-primary" onClick={this.insertionSort.bind(this)}>Insertion Sort</Button>{' '}
                 <Button style={{margin: '10px'}} variant="outline-primary"onClick={this.selectionSort.bind(this)}>Selection Sort</Button>{' '}
                 </div>
-                <div className="array-bars">
-                {array.map((value, index) => (<div className="bar" key={index} style={{height: `${value}px`}}></div>))}
+                <div className="array-bars" >
+                {array.map((value, index) => (
+                    <div>
+                        <div 
+                        className="bar" 
+                        key={index} 
+                        ref = {(value) => this.arrayRef[index] = value}
+                        style={{height: `${value}px`}}></div>
+                    </div>
+                ))}
                 </div>
                 
             </Container>
